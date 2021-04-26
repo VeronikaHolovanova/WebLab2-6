@@ -1,0 +1,21 @@
+{
+    "newsItems": [
+
+      {
+        "id": 1,
+        "left": "Card number:",
+        "right": "2450 24512 25412"
+      },
+      {
+        "id": 2,
+        "left": "Account Name:",
+        "right": "Subash Chandra"
+      },
+      {
+        "id": 3,
+        "left": "Card status:",
+        "right": "passive"
+      }
+      
+    ]
+}

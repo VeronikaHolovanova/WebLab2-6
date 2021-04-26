@@ -78,9 +78,9 @@
             <div class="mdc-top-app-bar__section ">
               <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Search">search</button>
               <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Notifications none">notifications_none</button>
-              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Mail outline">mail_outline</button>
+              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Mail outline" onclick="loadDoc()">mail_outline</button>
               <img src="app/icons/Ellipse 1.png" class="photo">
-              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Expand more">expand_more</button>
+              <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" id="headerbuttom" aria-label="Expand more" onclick="loadData()">expand_more</button>
             </div>
           </div>
         </div>
@@ -95,11 +95,12 @@
                 <img src="app/img/Card.png" class="cardimg">
                 <div class="cardline"></div>
 
-                  <ul class="mdc-list">
+                  <ul class="mdc-list" id="news-block">
+                    <!---->
                     <li class="mdc-list-item" id="cardlines" tabindex="0">
                       <span class="mdc-list-item__ripple"></span>
                       <span class="mdc-list-item__text" id = "left">Card number:</span>
-                      <span class="mdc-list-item__text" id = "right">2450 24512 25412</span>
+                      <span class="mdc-list-item__text" id = "right" >2450 24512 25412</span>
                     </li>
                     <li class="mdc-list-item" id="cardlines">
                       <span class="mdc-list-item__ripple"></span>
@@ -109,7 +110,7 @@
                     <li class="mdc-list-item" id="cardlines">
                       <span class="mdc-list-item__ripple"></span>
                       <span class="mdc-list-item__text" id = "left">Card status:</span>
-                      <span class="mdc-list-item__text" id = "right">Active</span>
+                      <span class="mdc-list-item__text" id = "right">passive</span>
                     </li>
                   </ul>
 
@@ -186,7 +187,7 @@
                         <span><img src="app/img/monthly.png" class="imgsale"></span>
                       </li>
                     </ul>
-                    <!--<div id='progressfake'></div>-->
+
                     <div id='progress1' onload="onLoad1()"></div>
                   </div>
                 </div>
@@ -221,7 +222,7 @@
                       <span class="mdc-list-item__ripple"></span> 
                       <span class="mdc-list-item__text" id="calender_text">
                         <span class="mdc-list-item__primary-text" id="big-calender" >Calendar</span>
-                        <span class="mdc-list-item__secondary-text">April 19, 2021</span>
+                        <span class="mdc-list-item__secondary-text">April 26, 2021</span>
                       </span>
                       <span id="morevert"><button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="More vert">more_vert</button></span>
                     </li>
@@ -233,7 +234,79 @@
         </div>
       </div>
     </div>
+    <script>
 
+      var data = function() {
+            var jsonTemp = null;
+            $.ajax({
+                async: true,
+                type: "Get",
+                url: "data/data.json",
+                dataType: "json",
+                success: function(data) {
+                    jsonTemp = data.newsItems;
+                },
+                error: function(){
+                  alert("json not found");
+                }
+            });
+            return jsonTemp;
+        }();
+
+        function loadData() {
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        alert(xhr.responseText);
+                    }
+                    if (xhr.status == 404) {
+                        alert('Ups...error :(');
+                    }
+                }
+            }
+
+            xhr.open('get', 'data/data.json', true);
+            xhr.send();
+        }
+        
+        function newsContainerItem(left, right) {
+            var html = '';
+            html = html + '<li class="mdc-list-item" id="cardlines" tabindex="0">\n' +'<span class="mdc-list-item__ripple">'+'</span>\n'+'<span class="mdc-list-item__text" id = "left">' + left + '</span>\n' +
+                '<span class="mdc-list-item__text" id = "right">' + right + '</span>\n' + '/li\n';
+
+            return html;
+        }
+
+        function newsContainerBuilder() {
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+                html = html + newsContainerItem(data[i].left, data[i].right);
+            }
+            $('#news-block').html(html);
+        }/**/
+
+    </script>
+   
+    <script>
+    function loadDoc() {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          if(xhr.status == 200) {
+            alert(xhr.responseText);
+          }
+          if(xhr.status == 404) {
+            alert('Ups...error 404:(');
+          }
+        }
+      }
+      xhr.open('get', 'ajaxInfo.txt', true);
+      xhr.send();
+    }
+    </script>
     <script src="/app/js/index.js"></script>
     <script src="/app/js/chart.js"></script>
     <script src="/app/js/line.js"></script>
